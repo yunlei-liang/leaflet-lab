@@ -1,0 +1,320 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 19,
+        "name": "United States",
+        "GDP1985": 4350,
+        "GDP1990": 5980,
+        "GDP1995": 7660,
+        "GDP2000": 10300,
+        "GDP2005": 13100,
+        "GDP2010": 15000,
+        "GDP2015": 18100
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -98.9899826,
+          39.4959145
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 18,
+        "name": "China",
+        "GDP1985": 309,
+        "GDP1990": 361,
+        "GDP1995": 735,
+        "GDP2000": 1210,
+        "GDP2005": 2290,
+        "GDP2010": 6100,
+        "GDP2015": 11100
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.7358093,
+          36.5631142
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 13,
+        "name": "Japan",
+        "GDP1985": 1400,
+        "GDP1990": 3130,
+        "GDP1995": 5450,
+        "GDP2000": 4890,
+        "GDP2005": 4760,
+        "GDP2010": 5700,
+        "GDP2015": 4390
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          137.9816895,
+          36.6533356
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 12,
+        "name": "Germany",
+        "GDP1985": 730,
+        "GDP1990": 1760,
+        "GDP1995": 2590,
+        "GDP2000": 1950,
+        "GDP2005": 2860,
+        "GDP2010": 3420,
+        "GDP2015": 3380
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.4006948,
+          51.1218071
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 11,
+        "name": "United Kingdom",
+        "GDP1985": 489,
+        "GDP1990": 1090,
+        "GDP1995": 1340,
+        "GDP2000": 1650,
+        "GDP2005": 2520,
+        "GDP2010": 2440,
+        "GDP2015": 2890
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -2.5505641,
+          53.9438324
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 10,
+        "name": "France",
+        "GDP1985": 553,
+        "GDP1990": 1270,
+        "GDP1995": 1600,
+        "GDP2000": 1360,
+        "GDP2005": 2200,
+        "GDP2010": 2640,
+        "GDP2015": 2440
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.4519441,
+          46.6218414
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 9,
+        "name": "India",
+        "GDP1985": 229,
+        "GDP1990": 317,
+        "GDP1995": 355,
+        "GDP2000": 462,
+        "GDP2005": 809,
+        "GDP2010": 1660,
+        "GDP2015": 2100
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.7270126,
+          22.4931183
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 8,
+        "name": "Italy",
+        "GDP1985": 451,
+        "GDP1990": 1180,
+        "GDP1995": 1170,
+        "GDP2000": 1140,
+        "GDP2005": 1850,
+        "GDP2010": 2130,
+        "GDP2015": 1830
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.1621838,
+          43.5290298
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 7,
+        "name": "Brazil",
+        "GDP1985": 223,
+        "GDP1990": 462,
+        "GDP1995": 769,
+        "GDP2000": 655,
+        "GDP2005": 892,
+        "GDP2010": 2210,
+        "GDP2015": 1800
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -53.0680847,
+          -10.776803
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 6,
+        "name": "Canada",
+        "GDP1985": 365,
+        "GDP1990": 594,
+        "GDP1995": 604,
+        "GDP2000": 742,
+        "GDP2005": 1170,
+        "GDP2010": 1610,
+        "GDP2015": 1560
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -96.3883514,
+          62.5360413
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 5,
+        "name": "Korea, Rep.",
+        "GDP1985": 100,
+        "GDP1990": 279,
+        "GDP1995": 556,
+        "GDP2000": 562,
+        "GDP2005": 898,
+        "GDP2010": 1090,
+        "GDP2015": 1380
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          127.861145,
+          36.4511566
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4,
+        "name": "Australia",
+        "GDP1985": 180,
+        "GDP1990": 311,
+        "GDP1995": 367,
+        "GDP2000": 415,
+        "GDP2005": 693,
+        "GDP2010": 1140,
+        "GDP2015": 1350
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          134.3597107,
+          -25.5789375
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 3,
+        "name": "Spain",
+        "GDP1985": 180,
+        "GDP1990": 535,
+        "GDP1995": 613,
+        "GDP2000": 595,
+        "GDP2005": 1160,
+        "GDP2010": 1430,
+        "GDP2015": 1200
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5573909,
+          40.3876953
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2,
+        "name": "Mexico",
+        "GDP1985": 195,
+        "GDP1990": 261,
+        "GDP1995": 360,
+        "GDP2000": 708,
+        "GDP2005": 877,
+        "GDP2010": 1060,
+        "GDP2015": 1170
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -102.5251389,
+          23.9406204
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 1,
+        "name": "Indonesia",
+        "GDP1985": 85,
+        "GDP1990": 106,
+        "GDP1995": 202,
+        "GDP2000": 165,
+        "GDP2005": 286,
+        "GDP2010": 755,
+        "GDP2015": 861
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          113.9972305,
+          -0.210123
+        ]
+      }
+    }
+  ]
+}
