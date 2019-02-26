@@ -1,4 +1,4 @@
-/* Lab1 by Yunlei Liang, 2019 */
+/* Module 5A java script by Yunlei Liang, 2019 */
 
 /* Map of GeoJSON data from MegaCities.geojson */
 
