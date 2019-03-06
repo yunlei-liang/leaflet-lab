@@ -5,25 +5,34 @@
 
 function createMap(){
     //create the map
-    var map = L.map('map', {
+    var mapporp = L.map('mapporp', {
         center: [38,-94],
         zoom: 4
     });
+	
+    var mapchoro = L.map('mapchoro', {
+        center: [38,-94],
+        zoom: 4
+    });	
 
     //add OSM base tilelayer
+   L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+    }).addTo(mapporp);
+	
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-    }).addTo(map);
+    }).addTo(mapchoro);
 
-	mapindex = 1; //proportional map
-	console.log('yes I am triggered',mapindex);
-    //call getData function
-    getDataProp(map, mapindex);
-
+	var geojson1,geojson2;
+    geojson2=getDataProp(mapporp,mapchoro);
+	console.log(geojson2);
+	getDataChoro(mapporp,mapchoro);
+	
 	
 	var legend = L.control({position: 'bottomright'});
 
-	legend.onAdd = function (map) {
+	legend.onAdd = function (mapchoro) {
 
 		var div = L.DomUtil.create('div', 'info legend'),
 			grades = [0, 5, 10, 20, 30, 50, 75, 100],
@@ -38,77 +47,18 @@ function createMap(){
 
 		return div;
 	};
-		
-	legend.addTo(map);
-	
-	//getDataProp(map);
-	
-	
-	
-	var prop = L.Control.extend({
-		options: {position: 'topright'},
-
-		onAdd : function (map) { 
-				this._div = L.DomUtil.create('div', 'prop');
-
-				if (!L.Browser.touch) {
-					L.DomEvent
-						.disableClickPropagation(this._div)
-						.disableScrollPropagation(this._div);
-				} else {
-					L.DomEvent.on(this._div, 'click', function(ev){
-						mapindex = 1;
-						console.log("changed to proportional map");
-						if (geojson2){
-							geojson2.clearLayers();
-						}
-						if (geojson1){
-							geojson1.clearLayers();
-						}											
-						getDataProp(map, mapindex);
-						L.DomEvent.stopPropagation(ev);
-					});
-				}
-				this._div.innerHTML =  '<h3>Proportional Map</h3>';
-		
-		return this._div;     
-				}                              	
-	});
-	
-	var choro = L.Control.extend({
-		options: {position: 'topright'},
-
-		onAdd : function (map) { 
-				this._div = L.DomUtil.create('div', 'choro');
-
-				if (!L.Browser.touch) {
-					L.DomEvent
-						.disableClickPropagation(this._div)
-						.disableScrollPropagation(this._div);
-				} else {
-					L.DomEvent.on(this._div, 'click', function(ev){
-						mapindex = 0;
-						console.log("changed to choropleth map");
-						if (geojson2){
-							geojson2.clearLayers();
-						}
-						if (geojson1){
-							geojson1.clearLayers();
-						}											
-						getDataChoro(map, mapindex);
-						L.DomEvent.stopPropagation(ev);
-					});
-				}
-				this._div.innerHTML =  '<h3>Choropleth Map</h3>';
-		
-		return this._div;     
-				}                              	
-	});
-	
-	map.addControl(prop);
-	map.addControl(choro);
+	legend.addTo(mapchoro);
 
 };
+
+
+function addOverlays(overlay,map){
+	
+	L.control.layers(overlay).addTo(map);
+	
+};
+
+
 
 function getColor(d) {
     return d > 100 ? '#800026' :
@@ -127,8 +77,7 @@ function style(feature, attributes){
 	var attribute = attributes[0];
 	
 	//check
-    //console.log(feature.properties[attribute]);
-    
+    //console.log(feature.properties[attribute]);   
     return {
         fillColor: getColor(feature.properties[attribute]),
         weight: 2,
@@ -162,21 +111,21 @@ function onEachFeature(feature,attributes,layer){
 }
 
 
-var geojson1;
 
 //Example 2.1 line 34...Add circle markers for point features to the map
-function createChoropleth(data, map, attributes){
+function createChoropleth(response, map, attributes){
 	
     //create a Leaflet GeoJSON layer and add it to the map
-    geojson1 = L.geoJson(data, {
+    var geojson1 = L.geoJson(response, {
 		onEachFeature: function(feature,layer){
 			return onEachFeature(feature,attributes,layer)
 		},
 		style: function (feature) {		
-			return style(feature, attributes);
-			
+			return style(feature, attributes);			
 		}
     }).addTo(map);
+	return geojson1;
+
 };
 
 
@@ -249,17 +198,21 @@ function pointToLayer(feature, latlng, attributes){
     //return the circle marker to the L.geoJson pointToLayer option
     return layer;
 };
-
 var geojson2;
 
 //Example 2.1 line 34...Add circle markers for point features to the map
-function createPropSymbols(data, map, attributes){
+function createPropSymbols(response, map, attributes){
     //create a Leaflet GeoJSON layer and add it to the map
-    geojson2 = L.geoJson(data, {
+    var geojson2;
+	geojson2 = L.geoJson(response, {
         pointToLayer: function(feature, latlng){
             return pointToLayer(feature, latlng, attributes);
         }
     }).addTo(map);
+	
+
+
+	return geojson2;
 };
 
 
@@ -284,44 +237,58 @@ function processData(data){
 
 
 //Step 2: Import GeoJSON data
-function getDataChoro(map, mapindex){
+function getDataChoro(mapprop,mapchoro,geojson2){
     //load the data
+	var geojson1;
     $.ajax("data/PolygonData.geojson", {
         dataType: "json",
         success: function(response){
             //create an attributes array
             var attributes = processData(response);			
-			createChoropleth(response, map, attributes);
-            createSequenceControls(map, attributes, mapindex);
+			geojson1 = createChoropleth(response, mapchoro, attributes);
+            createSequenceControls(mapprop,mapchoro,attributes);
+
+			var overlay = {
+				"choropleth Map": geojson1,
+				"Proportional Map": geojson2
+			};
+			
+			addOverlays(overlay,mapprop);			
         }
     });
+	
+	return geojson1;
 };
 
-function getDataProp(map){
+function getDataProp(mapprop,mapchoro){
     //load the data
     $.ajax("data/Data.geojson", {
         dataType: "json",
         success: function(response){
             //create an attributes array
             var attributes = processData(response);			
-			createPropSymbols(response, map, attributes);
+			geojson2 = createPropSymbols(response, mapprop, attributes);
             //createPropSequenceControls(map, attributes, mapindex);
-			createSequenceControls(map, attributes, mapindex);
+			createSequenceControls(mapprop,mapchoro,attributes);
+			getDataChoro(mapprop,mapchoro,geojson2);
         }
     });
+	
+	
+	
+
 };
 
 
 //Step 1: Create new sequence controls
-function createSequenceControls(map, attributes, mapindex){
+function createSequenceControls(mapprop,mapchoro,attributes){
     //create range input element (slider)
-
+	
     var p = document.getElementById('panel').children;
-
 	if ((p.length) == 2 ){
 		$('#panel').append('<input class="range-slider" type="range">');
 	}else{
-		console.log("exists");
+		console.log("slider exists");
 	}
 	
     //set slider attributes
@@ -334,71 +301,44 @@ function createSequenceControls(map, attributes, mapindex){
     
     //Step 5: click listener for buttons
 	
-	$('.skip').click(function(event){
+	$('.skip').click(function(){
 		var index = $('.range-slider').val();
-		if (mapindex === 0){
-			//get the old index value		 
-			//Step 6: increment or decrement depending on button clicked
-			if ($(this).attr('id') == 'forward'){
-				index++;
-				//Step 7: if past the last attribute, wrap around to first attribute
-				index = index > 6 ? 0 : index;
-			} else if ($(this).attr('id') == 'reverse'){
-				index--;
-				//Step 7: if past the first attribute, wrap around to last attribute
-				index = index < 0 ? 6 : index;
-			};	
-			//Step 8: update slider
+		//get the old index value		 
+		//Step 6: increment or decrement depending on button clicked
+		if ($(this).attr('id') == 'forward'){
+			index++;
+			//Step 7: if past the last attribute, wrap around to first attribute
+			index = index > 6 ? 0 : index;
 			$('.range-slider').val(index);
 			
 			//Called in both skip button and slider event listener handlers
 			//Step 9: pass new attribute to update symbols
-			updateChoropleth(map, attributes[index]);
-			console.log("slider index choropleth",index);	
-			console.log("map index choropleth",mapindex);			
-						
-		} else if (mapindex === 1){
-			//get the old index value
+			updateChoropleth(mapchoro, attributes[index]);
+			updatePropSymbols(mapprop, attributes[index]);
+			console.log('index',index);
+		} else if ($(this).attr('id') == 'reverse'){
+			index--;
+			//Step 7: if past the first attribute, wrap around to last attribute
+			index = index < 0 ? 6 : index;
 			
-			//Step 6: increment or decrement depending on button clicked
-			if ($(this).attr('id') == 'forward'){
-				index++;
-				//Step 7: if past the last attribute, wrap around to first attribute
-				index = index > 6 ? 0 : index;
-			} else if ($(this).attr('id') == 'reverse'){
-				index--;
-				//Step 7: if past the first attribute, wrap around to last attribute
-				index = index < 0 ? 6 : index;
-			};	
-			//Step 8: update slider
 			$('.range-slider').val(index);
 			
 			//Called in both skip button and slider event listener handlers
 			//Step 9: pass new attribute to update symbols
-			updatePropSymbols(map, attributes[index]);
-			console.log("slider index proportional",index);	
-			console.log("mapindex proportional",mapindex);			
-			
-		}; 
-		L.DomEvent.stopPropagation(event);
-		//console.log("one click completed");
-		
-		
-			
-	});   	        
+			updateChoropleth(mapchoro, attributes[index]);
+			updatePropSymbols(mapprop, attributes[index]);
+			console.log('index',index);			
+		};	
+		//Step 8: update slider
 
-    
+	});   	        
+   
     //Step 5: input listener for slider
     $('.range-slider').on('input', function(){
         //Step 6: get the new index value
 		var index = $(this).val();
-		if (mapindex == 0){
-			updateChoropleth(map, attributes[index]);		
-						
-		} else if (mapindex == 1){
-			//get the old index value;			
-			updatePropSymbols(map, attributes[index]);		
-		};
+		updateChoropleth(mapchoro, attributes[index]);			
+		updatePropSymbols(mapprop, attributes[index]);
 
     });
 	
@@ -435,68 +375,6 @@ function updateChoropleth(map, attribute){
 };
 
 
-//Step 1: Create new sequence controls
-function createPropSequenceControls(map, attributes, mapindex){
-    //create range input element (slider)
-    var p = document.getElementById('panel').children;
-
-	if ((p.length) == 2 ){
-		$('#panel').append('<input class="range-slider" type="range">');
-	}else{
-		console.log("slider exists");
-	}
-	
-
-    //set slider attributes
-    $('.range-slider').attr({
-        max: 6,
-        min: 0,
-        value: 0,
-        step: 1
-    });
-	
-    //Step 5: click listener for buttons
-
-		$('.skip').click(function(){
-			//get the old index value
-			var index = $('.range-slider').val();
-			console.log("propclick",mapindex);
-			
-			//Step 6: increment or decrement depending on button clicked
-				if ($(this).attr('id') == 'forward'){
-					index++;
-					//Step 7: if past the last attribute, wrap around to first attribute
-					index = index > 6 ? 0 : index;
-				} else if ($(this).attr('id') == 'reverse'){
-					index--;
-					//Step 7: if past the first attribute, wrap around to last attribute
-					index = index < 0 ? 6 : index;
-				};	
-				//Step 8: update slider
-				$('.range-slider').val(index);
-				
-				//Called in both skip button and slider event listener handlers
-				//Step 9: pass new attribute to update symbols
-				updatePropSymbols(map, attributes[index]);
-				console.log("createprop",index);	
-				console.log("createprop",mapindex);			
-			
-					
-		});   
-
-	
-	
-	
-
-    //Step 5: input listener for slider
-    $('.range-slider').on('input', function(){
-        //Step 6: get the new index value
-        var index = $(this).val();
-		updatePropSymbols(map, attributes[index]);
-		console.log("createPorSlider",index);
-    });
-	
-};
 
 //Step 10: Resize proportional symbols according to new attribute values
 function updatePropSymbols(map, attribute){

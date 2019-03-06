@@ -3,9 +3,15 @@
     margin: 0.2em 0;
 }
 
-#map {
+#mapporp {
     height: 400px;
     width: 80%;
+    display: inline-block;
+}
+
+#mapchoro {
+    height: 400px;
+    width: 0%;
     display: inline-block;
 }
 
